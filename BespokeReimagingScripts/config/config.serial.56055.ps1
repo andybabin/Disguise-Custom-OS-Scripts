@@ -1,3 +1,5 @@
+#rx 107
+
 return @{
     hostName="rx-107"
     NetAdapterSettings=@{
@@ -5,7 +7,7 @@ return @{
             StaticIP='192.168.5.127'
             NewName='A - Management'
             GatewayIP='192.168.5.1'
-            NSIP='192.168.5.1'
+            DNSIP='192.168.5.1'
             DNSIP2='8.8.8.8'
         }
         '1Gbit - 4'= @{
@@ -23,11 +25,11 @@ return @{
             StaticIP='192.168.70.127'
             NewName='C - Omnical'
         }
-        '25Gbit - 1' = @{
+        'D - 25Gbit' = @{
             StaticIP='192.168.40.127'
             NewName='E - Renderstream'
         }
-        '25Gbit - 2' = @{
+        'E - 25Gbit' = @{
             StaticIP='192.168.30.127'
             NewName='F - Content'
         }

@@ -1,3 +1,5 @@
+#d3 106
+
 return @{
     hostName="d3-106"
     NetAdapterSettings=@{
@@ -5,7 +7,7 @@ return @{
             StaticIP='192.168.5.106'
             NewName='A - Management'
             GatewayIP='192.168.5.1'
-            NSIP='192.168.5.1'
+            DNSIP='192.168.5.1'
             DNSIP2='8.8.8.8'
         }
         'B - Media 10GBit' = @{

@@ -1,3 +1,5 @@
+#this should work for a gx3 and a vx4p
+
 return @{
     hostName="d3-Test-Name"
     NetAdapterSettings=@{

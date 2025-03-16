@@ -1,3 +1,13 @@
+param(
+    # args: Internal, Upgrade, 
+    [Parameter(Mandatory=$true)]
+    [PSCustomObject]$SettingsObject,
+    [Parameter(Mandatory=$true)]
+    [string]$ServerModelCode,
+    [Parameter(Mandatory=$true)]
+    [string]$ServerSerialNumber
+)
+
 function Find-OrCreateFolder
 {
     param (
@@ -33,15 +43,7 @@ function Copy-FileToDestination
     }
 }
 
-param(
-    # args: Internal, Upgrade, 
-    [Parameter(Mandatory=$true)]
-    [PSCustomObject]$SettingsObject,
-    [Parameter(Mandatory=$true)]
-    [string]$ServerModelCode,
-    [Parameter(Mandatory=$true)]
-    [string]$ServerSerialNumber
-)
+
 #DEBUG INFO...
 Write-Host "StartScript.ps1 called with ServerModelCode [$($ServerModelCode)] and ServerSerialNumber [$($ServerSerialNumber)]"
 
@@ -56,25 +58,43 @@ if( $SettingsObject.shouldInstallUnreal ) {
     Write-Host "Starting Unreal Engine installation..."
     $installUnrealScript = Join-Path -Path $PSScriptRoot -ChildPath "InstallUnreal.ps1"
     & $installUnrealScript
-}
+}  else {Write-Host "Skipping unreal"}
 
 
 if ( $SettingsObject.hostName ) {
     #Set PC Hostname (Note, a restart will be required for this to take effect which happens at the end of the reimage process anyway
     $hostName = $SettingsObject.HostName
     Rename-Computer $hostName -Force
-}
+    Write-Host "Renamed to $hostName"
+}  else {Write-Host "Skipping hostname"}
 
 
 
 if ( $SettingsObject.shouldInstallRemotix ) {
-    Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
+    #Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
     $anyDeskInstallerPath = Join-Path -Path $PSScriptRoot -ChildPath "tools\AcronisCyberProtectConnectAgent-win-d3-Default.exe"
     
     Unblock-File -Path $anyDeskInstallerPath
     Start-Process -Wait -FilePath $anyDeskInstallerPath -ArgumentList "/S" -PassThru
-}
+} else {Write-Host "Skipping remotix"}
 
+
+if ( $SettingsObject.shouldInstallEpicGames ) {
+    #Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
+    #$anyDeskInstallerPath = Join-Path -Path $PSScriptRoot -ChildPath "tools\"
+    
+    #Unblock-File -Path $anyDeskInstallerPath
+    #Start-Process -Wait -FilePath $anyDeskInstallerPath -ArgumentList "/S" -PassThru
+    # Install Epic Games Launcher
+    #Write-Output "INSTALLING EPIC GAMES LAUNCHER"
+    #Start-Process "$TOOLS_DIR\EpicGamesLauncher\EpicInstaller-*.msi" -ArgumentList "/quiet /norestart" -NoNewWindow -Wait
+    $epicInstaller = Join-Path -Path $PSScriptRoot -ChildPath "tools\EpicGamesLauncher\EpicInstaller-18.1.3.msi"
+    if ($epicInstaller) {
+        Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$($epicInstaller.FullName)`" /quiet /norestart ALLUSERS=1" -NoNewWindow -Wait
+    } else {
+        Write-Host "Epic Games Launcher MSI installer not found in tools\sources\EpicGamesLauncher"
+    }
+} else {Write-Host "Skipping Epic Games"}
 
 if ( $SettingsObject.shouldUpdateDesktopWallpaper )
 {
@@ -94,10 +114,10 @@ if ( $SettingsObject.shouldUpdateDesktopWallpaper )
     $shortcut.Description = "BGImage Setup"
     $targetPath = Join-Path -Path $toolsFolder -ChildPath "Bginfo64.exe"
     $shortcut.TargetPath = $targetPath
-    $arguments = "D:\tools\BGInfoConfig.bgi /TIMER:0 /ACCEPTEULA"
+    $arguments = "D:\tools\d3.bgi /TIMER:0 /ACCEPTEULA"
     $shortcut.Arguments = $arguments
     $shortcut.Save()
     $WshShell = $null
-}
+}  else {Write-Host "Skipping wallpaper"}
 
 Write-Host "StartScript.ps1 Completed Successfully"
