@@ -77,6 +77,9 @@ If (!(Test-Path "C:\ProgramData\Epic\UnrealEngineLauncher")) {
 }
 Copy-Item "$TOOLS_DIR\UE5\LauncherInstalled.dat" "C:\ProgramData\Epic\UnrealEngineLauncher\LauncherInstalled.dat" -Force
 
+# Add "Edit with unreal" context menu
+#Start-Process "$INSTALL_DIR_UE5\UE_5.$MAJOR\Engine\Binaries\Win64\UnrealVersionSelector.exe /register /unattended"
+
 # Remove temp files
 If (Test-Path "$INSTALL_DIR_UE5\temp_5.$MAJOR.$MINOR") {
     Remove-Item -Path "$INSTALL_DIR_UE5\temp_5.$MAJOR.$MINOR" -Recurse -Force
