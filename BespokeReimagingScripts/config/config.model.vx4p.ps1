@@ -2,7 +2,7 @@ return @{
     #disguise Settings
     enforcePressAnyKeyBeforeReboot=$true
     netAdapterStaticIPMaskNoOfBits=24
-    shouldInstallRemotix=$false
+    shouldInstallRemotix=$true
     shouldUpdateDesktopWallpaper=$true
     shouldInstallUnreal=$false
 
