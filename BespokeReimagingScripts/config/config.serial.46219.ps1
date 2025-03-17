@@ -7,8 +7,8 @@ return @{
             StaticIP='192.168.5.101'
             NewName='A - Management'
             GatewayIP='192.168.5.1'
-            DNSIP='192.168.5.1'
-            DNSIP2='8.8.8.8'
+            DNSIP='192.168.1.4'
+            DNSIP2='192.168.1.5'
         }
         'B - Media 10GBit' = @{
             StaticIP='192.168.10.102'
